@@ -20,7 +20,7 @@ public class Main extends Sprite {
 
     public var idnet;
     // please read http://dev.id.net/docs/actionscript/ for details about this example
-    private var appID = "57423eb4d559301ed10161f6"; // your application id
+    private var appID = your app id; // your application id, can by found at https://www.id.net/applications
     private var verbose = true; // display idnet messages
     private var showPreloader = false; // Display Traffic Flux preloader ad
 
