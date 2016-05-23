@@ -20,7 +20,7 @@ public class Main extends Sprite {
 
     public var idnet;
     // please read http://dev.id.net/docs/actionscript/ for details about this example
-    private var appID = your app id; // your application id, can by found at https://www.id.net/applications
+    private var appID = ""; // your application id, can by found at https://www.id.net/applications
     private var verbose = true; // display idnet messages
     private var showPreloader = false; // Display Traffic Flux preloader ad
 
@@ -36,6 +36,9 @@ public class Main extends Sprite {
     private var savedLevelid:String = "";
 
     public function Main() {
+        if (appID == "") {
+            throw Error("Please enter your appId. Example will not work without it.");
+        }
         Security.allowInsecureDomain('*');
         Security.allowDomain('*');
         addEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
