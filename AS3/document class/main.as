@@ -146,7 +146,7 @@
 			if (Security.sandboxType != "localTrusted") {
 				loaderContext.securityDomain = SecurityDomain.currentDomain;// Sets the security 
 			}
-			var sdk_url:String = "https://www.id.net/swf/idnet-client.swc?="+new Date().getTime();
+			var sdk_url:String = 'https://scdn.id.net/swf/idnet-client.swc';
 			var urlRequest:URLRequest = new URLRequest(sdk_url);
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadComplete, false, 0, true);
