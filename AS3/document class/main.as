@@ -87,6 +87,10 @@
 				if(e.target.name == 'mapRateBut'){
 					idnet.mapRate('12312342sdfsdf', 10);
 				}
+				
+				if(e.target.name == 'profileBut'){
+					idnet.openProfile();
+				}
 			} else {
 				log('Interface not loaded yet.');
 			}
