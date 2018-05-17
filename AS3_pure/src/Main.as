@@ -18,10 +18,10 @@ import view.MiniPushButton;
 
 public class Main extends Sprite {
 
-    public var idnet;
-    // please read http://dev.id.net/docs/actionscript/ for details about this example
-    private var appID = ""; // your application id, can by found at https://www.id.net/applications
-    private var verbose = true; // display idnet messages
+    public var sdk;
+    // please read http://docs.y8.com/docs/actionscript/ for details about this example
+    private var appID = ""; // your application id, can by found at https://account.y8.com/applications
+    private var verbose = true; // display sdk messages
     private var showPreloader = false; // Display Traffic Flux preloader ad
 
     private var gameSave1 = {
@@ -45,13 +45,13 @@ public class Main extends Sprite {
     }
 
     private function handleAddedToStage(event:Event):void {
-        log("Loading idnet-client.swc ...");
+        log("Loading sdk-client ...");
         var loaderContext:LoaderContext = new LoaderContext();
         loaderContext.applicationDomain = ApplicationDomain.currentDomain;
         if (Security.sandboxType != "localTrusted") {
             loaderContext.securityDomain = SecurityDomain.currentDomain;// Sets the security
         }
-        var sdk_url:String = "https://www.id.net/swf/idnet-client.swc?=" + new Date().getTime();
+        var sdk_url:String = "https://cdn.y8.com/swf/idnet-client.swc?=" + new Date().getTime();
         var urlRequest:URLRequest = new URLRequest(sdk_url);
         var loader:Loader = new Loader();
         loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleSwcLoadCompleate, false, 0, true);
@@ -61,10 +61,10 @@ public class Main extends Sprite {
 
     function handleSwcLoadCompleate(event:Event):void {
         log("... swc loaded!");
-        idnet = event.currentTarget.content;
-        idnet.addEventListener('IDNET', handleIDNET);
-        stage.addChild(idnet);
-        idnet.init(stage, appID, '', verbose, showPreloader);
+        sdk = event.currentTarget.content;
+        sdk.addEventListener('IDNET', handleSDK);
+        stage.addChild(sdk);
+        sdk.init(stage, appID, '', verbose, showPreloader);
 
         // init test buttons.
         initView();
@@ -108,71 +108,71 @@ public class Main extends Sprite {
     }
 
     private function handleLoginClick(event:MouseEvent) {
-        idnet.toggleInterface();
+        sdk.toggleInterface();
     }
 
     private function handleRegisterClick(event:MouseEvent) {
-        idnet.toggleInterface('registration');
+        sdk.toggleInterface('registration');
     }
 
     private function handleLogoutClick(event:MouseEvent) {
-        idnet.logout();
+        sdk.logout();
     }
 
 
     private function handleSaveClick(event:MouseEvent) {
-        idnet.submitUserData('gameSave1', JSON.stringify(gameSave1));
+        sdk.submitUserData('gameSave1', JSON.stringify(gameSave1));
     }
 
     private function handleLoadClick(event:MouseEvent) {
-        idnet.retrieveUserData('gameSave1');
+        sdk.retrieveUserData('gameSave1');
     }
 
     private function handleDeleteSaveClick(event:MouseEvent) {
-        idnet.removeUserData('gameSave1');
+        sdk.removeUserData('gameSave1');
     }
 
 
     private function handleListScoresClick(event:MouseEvent) {
-        idnet.advancedScoreList('Table Name');
+        sdk.advancedScoreList('Table Name');
     }
 
     private function handleSubmitScoreClick(event:MouseEvent) {
         var randScore = Math.floor(Math.random() * (100000 - 1 + 1)) + 1;
-        idnet.advancedScoreSubmit(randScore, 'Table Name');
+        sdk.advancedScoreSubmit(randScore, 'Table Name');
     }
 
 
     private function handleSumbitScoreAndListClick(event:MouseEvent) {
         var randScore = Math.floor(Math.random() * (100000 - 1 + 1)) + 1;
-        idnet.advancedScoreSubmitList(randScore, 'Table Name');
+        sdk.advancedScoreSubmitList(randScore, 'Table Name');
     }
 
     private function handlePlayerListClick(event:MouseEvent) {
-        idnet.advancedScoreListPlayer('Table Name');
+        sdk.advancedScoreListPlayer('Table Name');
     }
 
 
     private function handleListAchievementsClick(event:MouseEvent) {
-        idnet.toggleInterface('achievements');
+        sdk.toggleInterface('achievements');
     }
 
     private function handleUnlockAchievementsClick(event:MouseEvent) {
-        idnet.achievementsSave('achievement name', 'achievementkey');
+        sdk.achievementsSave('achievement name', 'achievementkey');
     }
 
 
     private function handleListPlayerMapClick(event:MouseEvent) {
-        idnet.toggleInterface('playerMaps');
+        sdk.toggleInterface('playerMaps');
     }
 
     private function handleSavePlayerMapClick(event:MouseEvent) {
-        idnet.mapSave('Test Map3', '{"testmap": [[0, 1],[1,0]]}');
+        sdk.mapSave('Test Map3', '{"testmap": [[0, 1],[1,0]]}');
     }
 
     private function handleLoadPlayerMapClick(event:MouseEvent) {
         if (savedLevelid) {
-            idnet.mapLoad(savedLevelid);
+            sdk.mapLoad(savedLevelid);
         } else {
             log("Please save level first.");
         }
@@ -180,51 +180,51 @@ public class Main extends Sprite {
 
     private function handleRatePlayerListClick(event:MouseEvent) {
         if (savedLevelid) {
-            idnet.mapRate(savedLevelid, 10);
+            sdk.mapRate(savedLevelid, 10);
         } else {
             log("Please save level first.");
         }
     }
 
-    // handleIDNET is where you will want to edit to send data to the rest of your application.
-    private function handleIDNET(event:Event) {
-        if (idnet.type == 'login') {
-            log('hello ' + idnet.userData.nickname + ' your pid is ' + idnet.userData.pid);
+    // handleSDK is where you will want to edit to send data to the rest of your application.
+    private function handleSDK(event:Event) {
+        if (sdk.type == 'login') {
+            log('hello ' + sdk.userData.nickname + ' your pid is ' + sdk.userData.pid);
         }
-        if (idnet.type == 'submit') {
-            log('data submitted. status is ' + idnet.data.status);
+        if (sdk.type == 'submit') {
+            log('data submitted. status is ' + sdk.data.status);
         }
-        if (idnet.type == 'retrieve') {
-            if (idnet.data.hasOwnProperty('error') === false) {
-                log('LOG: data retrieved. key is ' + idnet.data.key + ' data is ' + idnet.data.jsondata);
+        if (sdk.type == 'retrieve') {
+            if (sdk.data.hasOwnProperty('error') === false) {
+                log('LOG: data retrieved. key is ' + sdk.data.key + ' data is ' + sdk.data.jsondata);
             } else {
-                log('Error: ' + idnet.data.error);
+                log('Error: ' + sdk.data.error);
             }
         }
-        if (idnet.type == 'delete') {
-            log('deleted data ' + idnet.data);
+        if (sdk.type == 'delete') {
+            log('deleted data ' + sdk.data);
         }
 
-        if (idnet.type == 'advancedScoreListPlayer') {
-            log('player score: ' + idnet.data.scores[0].points);
+        if (sdk.type == 'advancedScoreListPlayer') {
+            log('player score: ' + sdk.data.scores[0].points);
         }
-        if (idnet.type == 'achievementsSave') {
-            if (idnet.data.errorcode == 0) {
+        if (sdk.type == 'achievementsSave') {
+            if (sdk.data.errorcode == 0) {
                 log('achievement unlocked');
             }
         }
-        if (idnet.type == 'mapSave') {
-            if (idnet.data.errorcode != 405) {
-                savedLevelid = idnet.data.level.levelid;
-                log('map saved. levelid is ' + idnet.data.level.levelid);
+        if (sdk.type == 'mapSave') {
+            if (sdk.data.errorcode != 405) {
+                savedLevelid = sdk.data.level.levelid;
+                log('map saved. levelid is ' + sdk.data.level.levelid);
             } else {
                 log("ERROR: level already exists.")
             }
         }
-        if (idnet.type == 'mapLoad') {
-            log(idnet.data.level.name + ' loaded');
+        if (sdk.type == 'mapLoad') {
+            log(sdk.data.level.name + ' loaded');
         }
-        if (idnet.type == 'mapRate') {
+        if (sdk.type == 'mapRate') {
             log('rating added');
         }
     }

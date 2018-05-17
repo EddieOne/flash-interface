@@ -14,10 +14,10 @@
 	import flash.system.LoaderContext;
 
 	public class main extends MovieClip {
-		public var idnet;
-		// please read http://dev.id.net/docs/actionscript/ for details about this example
+		public var sdk;
+		// please read http://docs.y8.com/docs/actionscript/ for details about this example
 		private var appID = 'YOUR APP ID'; // your application id
-		private var verbose = true; // display idnet messages
+		private var verbose = true; // display sdk messages
 		private var showPreloader = false; // Display Traffic Flux preloader ad
 		
 		private var gameSave1 = {
@@ -31,104 +31,104 @@
 
 		// Event listener to handle the buttons in the example
 		private function handleDemoClicks(e:MouseEvent) {
-			if (idnet) {
+			if (sdk) {
 				// main buttons
 				if (e.target.name == 'loginBut') {
-					idnet.toggleInterface();
+					sdk.toggleInterface();
 				}
 				if (e.target.name == 'regBut') {
-					idnet.toggleInterface('registration');
+					sdk.toggleInterface('registration');
 				}
-				// Logout is for testing only, please do Not use it in games. Logout is handled through id.net.
+				// Logout is for testing only, please do Not use it in games. Logout is handled through account.y8.com.
 				if (e.target.name == 'logoutBut') {
-					idnet.logout();
+					sdk.logout();
 				}		
 				// data save buttons
 				if (e.target.name == 'setBut') {
-					idnet.submitUserData('gameSave1', JSON.stringify(gameSave1));
+					sdk.submitUserData('gameSave1', JSON.stringify(gameSave1));
 				}
 				if (e.target.name == 'getBut') {
-					idnet.retrieveUserData('gameSave1');
+					sdk.retrieveUserData('gameSave1');
 				}
 				if (e.target.name == 'deleteBut') {
-					idnet.removeUserData('gameSave1');
+					sdk.removeUserData('gameSave1');
 				}
 				// score buttons
 				if(e.target.name == 'advancedScoreListBut'){
-					idnet.advancedScoreList('Table Name');
+					sdk.advancedScoreList('Table Name');
 				}
 				var randScore = Math.floor(Math.random() * (100000 - 1 + 1)) + 1;
 				if(e.target.name == 'advancedScoreSubmitBut'){
-					idnet.advancedScoreSubmit(randScore, 'Table Name');
+					sdk.advancedScoreSubmit(randScore, 'Table Name');
 				}
 				if(e.target.name == 'advancedScoreSubmitListBut'){
-					idnet.advancedScoreSubmitList(randScore, 'Table Name');
+					sdk.advancedScoreSubmitList(randScore, 'Table Name');
 				}
 				if(e.target.name == 'advancedScoreListPlayerBut'){
-					idnet.advancedScoreListPlayer('Table Name');
+					sdk.advancedScoreListPlayer('Table Name');
 				}
 				// achievements
 				if(e.target.name == 'achievementListBut'){
-					idnet.toggleInterface('achievements');
+					sdk.toggleInterface('achievements');
 				}
 				if(e.target.name == 'unlockBut'){
-					idnet.achievementsSave('achievement name', 'achievementkey');
+					sdk.achievementsSave('achievement name', 'achievementkey');
 				}
 				// player maps
 				if(e.target.name == 'mapListBut'){
-					idnet.toggleInterface('playerMaps');
+					sdk.toggleInterface('playerMaps');
 				}
 				if(e.target.name == 'mapSaveBut'){
-					idnet.mapSave('Test Map', '{"testmap": [[0, 1],[1,0]]}');
+					sdk.mapSave('Test Map', '{"testmap": [[0, 1],[1,0]]}');
 				}
 				if(e.target.name == 'mapLoadBut'){
-					idnet.mapLoad('12312342sdfsdf');
+					sdk.mapLoad('12312342sdfsdf');
 				}
 				if(e.target.name == 'mapRateBut'){
-					idnet.mapRate('12312342sdfsdf', 10);
+					sdk.mapRate('12312342sdfsdf', 10);
 				}
 				
 				if(e.target.name == 'profileBut'){
-					idnet.openProfile();
+					sdk.openProfile();
 				}
 			} else {
 				log('Interface not loaded yet.');
 			}
 		}
-		// handleIDNET is where you will want to edit to send data to the rest of your application. 
-		private function handleIDNET(e:Event) {
-			if (idnet.type == 'login') {
-				log('hello '+idnet.userData.nickname+' your pid is '+idnet.userData.pid);
+		// handleSDK is where you will want to edit to send data to the rest of your application. 
+		private function handleSDK(e:Event) {
+			if (sdk.type == 'login') {
+				log('hello '+sdk.userData.nickname+' your pid is '+sdk.userData.pid);
 			}
-			if (idnet.type == 'submit') {
-				log('data submitted. status is '+idnet.data.status);
+			if (sdk.type == 'submit') {
+				log('data submitted. status is '+sdk.data.status);
 			}
-			if (idnet.type == 'retrieve') {
-				if (idnet.data.hasOwnProperty('error') === false) {
-					log('LOG: data retrieved. key is '+idnet.data.key+' data is '+idnet.data.jsondata);
+			if (sdk.type == 'retrieve') {
+				if (sdk.data.hasOwnProperty('error') === false) {
+					log('LOG: data retrieved. key is '+sdk.data.key+' data is '+sdk.data.jsondata);
 				} else {
-					log('Error: '+idnet.data.error);
+					log('Error: '+sdk.data.error);
 				}
 			}
-			if (idnet.type == 'delete'){
-				log('deleted data '+idnet.data);
+			if (sdk.type == 'delete'){
+				log('deleted data '+sdk.data);
 			}
 	
-			if (idnet.type == 'advancedScoreListPlayer'){
-				log('player score: '+idnet.data.scores[0].points);
+			if (sdk.type == 'advancedScoreListPlayer'){
+				log('player score: '+sdk.data.scores[0].points);
 			}
-			if (idnet.type == 'achievementsSave'){
-				if(idnet.data.errorcode == 0){
+			if (sdk.type == 'achievementsSave'){
+				if(sdk.data.errorcode == 0){
 					log('achievement unlocked');
 				}
 			}
-			if (idnet.type == 'mapSave'){
-				log('map saved. levelid is '+idnet.data.level.levelid);
+			if (sdk.type == 'mapSave'){
+				log('map saved. levelid is '+sdk.data.level.levelid);
 			}
-			if (idnet.type == 'mapLoad'){
-				log(idnet.data.level.name+' loaded');
+			if (sdk.type == 'mapLoad'){
+				log(sdk.data.level.name+' loaded');
 			}
-			if (idnet.type == 'mapRate'){
+			if (sdk.type == 'mapRate'){
 				log('rating added');
 			}
 		}
@@ -137,7 +137,7 @@
 			trace('LOG: '+message);
 		}
 
-		// Below is the loader for the id.net interface. Do Not edit below.
+		// Below is the loader for the Y8 interface. Do Not edit below.
 		public function main() {
 			Security.allowInsecureDomain('*');
 			Security.allowDomain('*');
@@ -150,7 +150,7 @@
 			if (Security.sandboxType != "localTrusted") {
 				loaderContext.securityDomain = SecurityDomain.currentDomain;// Sets the security 
 			}
-			var sdk_url:String = 'https://scdn.id.net/swf/idnet-client.swc';
+			var sdk_url:String = 'https://cdn.y8.com/swf/idnet-client.swc';
 			var urlRequest:URLRequest = new URLRequest(sdk_url);
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadComplete, false, 0, true);
@@ -158,10 +158,10 @@
 		}
 
 		function loadComplete(e:Event):void {
-			idnet = e.currentTarget.content;
-			idnet.addEventListener('IDNET', handleIDNET);
-			stage.addChild(idnet);
-			idnet.init(stage, appID, '', verbose, showPreloader);
+			sdk = e.currentTarget.content;
+			sdk.addEventListener('IDNET', handleSDK);
+			stage.addChild(sdk);
+			sdk.init(stage, appID, '', verbose, showPreloader);
 		}
 	}
 }
